@@ -321,9 +321,13 @@ void process_keyboard_report(uint8_t *raw_report, int length, uint8_t itf, hid_i
         hotkey->action_handler(state, &new_report);
 
         /* And pass the key to the output PC if configured to do so. */
-        if (!hotkey->pass_to_os)
+        if (!hotkey->pass_to_os){
+            state->last_non_os_hotkey = time_us_32();
             return;
+        }
     }
+    if (state->last_non_os_hotkey + 50000 > time_us_32())
+        return;
 
     /* This method will decide if the key gets queued locally or sent through UART */
     send_key(&new_report, state);
