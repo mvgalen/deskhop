@@ -326,8 +326,10 @@ void process_keyboard_report(uint8_t *raw_report, int length, uint8_t itf, hid_i
             return;
         }
     }
-    if (state->last_non_os_hotkey + 50000 > time_us_32())
+    if (report->modifier != 0 && state->last_non_os_hotkey + 50000 > time_us_32()){
+        state->last_non_os_hotkey = time_us_32();
         return;
+    }
 
     /* This method will decide if the key gets queued locally or sent through UART */
     send_key(&new_report, state);
