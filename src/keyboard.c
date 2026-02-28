@@ -326,7 +326,7 @@ void process_keyboard_report(uint8_t *raw_report, int length, uint8_t itf, hid_i
             return;
         }
     }
-    if (new_report.keys != 0 && state->last_non_os_hotkey + 50000 > time_us_32()){
+    if (key_in_report(HOTKEY_TOGGLE, &new_report) && state->last_non_os_hotkey + 10000 > time_us_32()){
         state->last_non_os_hotkey = time_us_32();
         return;
     }
