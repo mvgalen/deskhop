@@ -103,17 +103,20 @@ void screenlock_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
 }
 /* This key combo locks both outputs simultaneously */
 void power_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
-    hid_keyboard_report_t lock_report = {0}, release_keys = {0};
-    lock_report.keycode[0] = HID_KEY_POWER;
-    for (int out = 0; out < NUM_SCREENS; out++) {
-        if (BOARD_ROLE == out) {
-            queue_kbd_report(&lock_report, state);
-            release_all_keys(state);
+//    hid_keyboard_report_t lock_report = {0}, release_keys = {0};
+//    lock_report.keycode[0] = HID_KEY_POWER;
+//    for (int out = 0; out < NUM_SCREENS; out++) {
+        uint8_t new_report = 0x82;
+        uint8_t *report_ptr = &new_report;
+        device_t *state = &global_state;
+    
+        if (CURRENT_BOARD_IS_ACTIVE_OUTPUT) {
+            send_system_control(report_ptr, state);
         } else {
-            queue_packet((uint8_t *)&lock_report, KEYBOARD_REPORT_MSG, KBD_REPORT_LENGTH);
-            queue_packet((uint8_t *)&release_keys, KEYBOARD_REPORT_MSG, KBD_REPORT_LENGTH);
+            queue_packet(report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
         }
-    }
+//    }
+
 }
 
 /* When pressed, erases stored config in flash and loads defaults on both boards */
