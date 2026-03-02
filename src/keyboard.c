@@ -45,6 +45,13 @@ hotkey_combo_t hotkeys[] = {
      .acknowledge    = true,
      .action_handler = &screenlock_hotkey_handler},
 
+    /* Power hotkey */
+    {.modifier       = KEYBOARD_MODIFIER_RIGHTGUI,
+     .keys           = {HID_KEY_L},
+     .key_count      = 1,
+     .acknowledge    = true,
+     .action_handler = &power_hotkey_handler},
+
     /* Toggle gaming mode */
     {.modifier       = KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTSHIFT,
      .keys           = {HID_KEY_G},
