@@ -108,7 +108,6 @@ void power_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
 //    for (int out = 0; out < NUM_SCREENS; out++) {
         uint8_t new_report = 0x82;
         uint8_t *report_ptr = &new_report;
-        device_t *state = &global_state;
     
         if (CURRENT_BOARD_IS_ACTIVE_OUTPUT) {
             send_system_control(report_ptr, state);
