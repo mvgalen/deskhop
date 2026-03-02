@@ -39,7 +39,7 @@ hotkey_combo_t hotkeys[] = {
      .action_handler = &switchlock_hotkey_handler},
 
     /* Screen lock */
-    {.modifier       = KEYBOARD_MODIFIER_RIGHTCTRL,
+    {.modifier       = KEYBOARD_MODIFIER_LEFTGUI,
      .keys           = {HID_KEY_L},
      .key_count      = 1,
      .acknowledge    = true,
