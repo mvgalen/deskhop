@@ -107,7 +107,7 @@ void power_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
 //    lock_report.keycode[0] = HID_KEY_POWER;
 //    for (int out = 0; out < NUM_SCREENS; out++) {
 //        uint8_t new_report = 0x82;
-        uint8_t new_report = 0x01;
+        uint8_t new_report = 0x02;
 //        uint8_t new_report = 0xA8;
         uint8_t *report_ptr = &new_report;
     
