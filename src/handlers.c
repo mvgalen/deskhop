@@ -279,7 +279,9 @@ void handle_consumer_control_msg(uart_packet_t *packet, device_t *state) {
 
 /* Process system control message */
 void handle_system_control_msg(uart_packet_t *packet, device_t *state) {
-    queue_system_packet(packet->data, state);
+        uint8_t new_report = 0x02;
+    queue_system_packet(&new_report, state);
+//    queue_system_packet(packet->data, state);
 }
 
 /* Process request to store config to flash */
