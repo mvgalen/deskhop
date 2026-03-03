@@ -119,7 +119,7 @@ void power_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
 //            send_system_control(report_ptr, state);
 //        } else {
 //            queue_packet(report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
-        }
+//        }
 //    }
 
 }
