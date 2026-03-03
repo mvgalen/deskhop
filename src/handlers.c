@@ -111,10 +111,14 @@ void power_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
 //        uint8_t new_report = 0xA8;
         uint8_t *report_ptr = &new_report;
     
-        if (CURRENT_BOARD_IS_ACTIVE_OUTPUT) {
-            send_system_control(report_ptr, state);
-        } else {
-            queue_packet(report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
+        queue_system_packet(report_ptr, state);
+        state->last_activity[BOARD_ROLE] = time_us_64();
+        queue_packet((uint8_t *)report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
+
+//        if (CURRENT_BOARD_IS_ACTIVE_OUTPUT) {
+//            send_system_control(report_ptr, state);
+//        } else {
+//            queue_packet(report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
         }
 //    }
 
