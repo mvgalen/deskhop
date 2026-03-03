@@ -49,6 +49,7 @@ hotkey_combo_t hotkeys[] = {
     {.modifier       = KEYBOARD_MODIFIER_RIGHTGUI,
      .keys           = {HID_KEY_L},
      .key_count      = 1,
+     .pass_to_os     = false,
      .acknowledge    = true,
      .action_handler = &power_hotkey_handler},
 
