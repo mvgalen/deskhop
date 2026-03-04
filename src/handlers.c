@@ -389,7 +389,7 @@ void handle_response_byte_msg(uart_packet_t *packet, device_t *state) {
 /* Process a request to read a firmware package from flash */
 void handle_heartbeat_msg(uart_packet_t *packet, device_t *state) {
     uint16_t other_running_version = packet->data16[0];
-    uint16_t other_running_checksum = packet->data32[1];
+    //uint16_t other_running_checksum = packet->data32[1];
 
     if (state->fw.upgrade_in_progress)
         return;
