@@ -389,12 +389,13 @@ void handle_response_byte_msg(uart_packet_t *packet, device_t *state) {
 /* Process a request to read a firmware package from flash */
 void handle_heartbeat_msg(uart_packet_t *packet, device_t *state) {
     uint16_t other_running_version = packet->data16[0];
+    uint16_t other_running_checksum = packet->data16[1];
 
     if (state->fw.upgrade_in_progress)
         return;
 
     /* If the other board isn't running a newer version, we are done */
-    if (other_running_version <= state->_running_fw.version)
+    if (other_running_version < state->_running_fw.version || (other_running_version == state->_running_fw.version && other_running_checksum == state->_running_fw.checksum)
         return;
 
     /* It is? Ok, kick off the firmware upgrade */
