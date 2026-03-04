@@ -103,25 +103,12 @@ void screenlock_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
 }
 /* This key combo locks both outputs simultaneously */
 void power_hotkey_handler(device_t *state, hid_keyboard_report_t *report) {
-//    hid_keyboard_report_t lock_report = {0}, release_keys = {0};
-//    lock_report.keycode[0] = HID_KEY_POWER;
-//    for (int out = 0; out < NUM_SCREENS; out++) {
-//        uint8_t new_report = 0x82;
         uint8_t new_report = 0x02;
-//        uint8_t new_report = 0xA8;
         uint8_t *report_ptr = &new_report;
     
         queue_system_packet(report_ptr, state);
         state->last_activity[BOARD_ROLE] = time_us_64();
         queue_packet((uint8_t *)report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
-
-//        if (CURRENT_BOARD_IS_ACTIVE_OUTPUT) {
-//            send_system_control(report_ptr, state);
-//        } else {
-//            queue_packet(report_ptr, SYSTEM_CONTROL_MSG, SYSTEM_CONTROL_LENGTH);
-//        }
-//    }
-
 }
 
 /* When pressed, erases stored config in flash and loads defaults on both boards */
@@ -389,13 +376,14 @@ void handle_response_byte_msg(uart_packet_t *packet, device_t *state) {
 /* Process a request to read a firmware package from flash */
 void handle_heartbeat_msg(uart_packet_t *packet, device_t *state) {
     uint16_t other_running_version = packet->data16[0];
-    //uint16_t other_running_checksum = packet->data32[1];
+    uint32_t other_running_checksum = packet->data32[1];
 
     if (state->fw.upgrade_in_progress)
         return;
 
     /* If the other board isn't running a newer version, we are done */
-    if (other_running_version <= state->_running_fw.version || (other_running_version == state->_running_fw.version /*&& other_running_checksum == state->_running_fw.checksum*/))
+    if (other_running_version < state->_running_fw.version || 
+	    (other_running_version == state->_running_fw.version && (state->board_role == OUTPUT_A || other_running_checksum == state->_running_fw.checksum) ))
         return;
 
     /* It is? Ok, kick off the firmware upgrade */
