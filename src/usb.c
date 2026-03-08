@@ -286,10 +286,10 @@ void tuh_hid_set_protocol_complete_cb(uint8_t dev_addr, uint8_t idx, uint8_t pro
 }
 
 void tud_hid_report_fail_cb(uint8_t instance, uint8_t ep_addr, uint16_t len){
-    if (state->switch_lock)
+    if (global_state.switch_lock)
         return;
 
-    if (global_state.board_role == global_state.active_output)){
+    if (global_state.board_role == global_state.active_output){
         global_state.active_output ^= 1;
         set_active_output(&global_state, global_state.active_output);
     }
