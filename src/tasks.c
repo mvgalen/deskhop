@@ -163,11 +163,13 @@ void heartbeat_output_task(device_t *state) {
         .type = HEARTBEAT_MSG,
         .data16 = {
             [0] = state->_running_fw.version,
-            [1] = state->active_output,
+            [1] = 0,
             [2] = 0,
             [3] = 0,
         },
     };
+    packet.data8[2] = state->active_output;
+    packet.data8[3] = state->tud_connected;
     packet.data32[1] = state->_running_fw.checksum;
 
     queue_try_add(&global_state.uart_tx_queue, &packet);

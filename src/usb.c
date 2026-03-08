@@ -94,6 +94,13 @@ void tud_mount_cb(void) {
 /* Invoked when device is unmounted */
 void tud_umount_cb(void) {
     global_state.tud_connected = false;
+    if (global_state.switch_lock)
+        return;
+
+    if (global_state.board_role == global_state.active_output){
+	global_state.active_output ^= 1;
+    	set_active_output(&global_state, global_state.active_output);
+    }
 }
 
 #ifdef DH_DEBUG_CDC_FLASH
@@ -277,3 +284,4 @@ void tuh_hid_set_protocol_complete_cb(uint8_t dev_addr, uint8_t idx, uint8_t pro
     hid_interface_t *iface = &global_state.iface[dev_addr-1][idx];
     iface->protocol = protocol;
 }
+
