@@ -378,7 +378,7 @@ void handle_heartbeat_msg(uart_packet_t *packet, device_t *state) {
     uint16_t other_running_version = packet->data16[0];
     uint32_t other_running_checksum = packet->data32[1];
     bool other_board_connected = packet->data[3];
-    if ( (!state->tud_connected) && other_board_connected && state->board_role == state->active_output){
+    if ( (!state->tud_connected || !tud_ready()) && other_board_connected && state->board_role == state->active_output){
 	state->active_output ^= 1;
     	set_active_output(state, state->active_output);
     }
