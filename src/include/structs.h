@@ -156,7 +156,7 @@ typedef struct {
     /* Onboard LED blinky (provide feedback when e.g. mouse connected) */
     int32_t blinks_left;     // How many blink transitions are left
     int32_t last_led_change; // Timestamp of the last time led state transitioned
-    bool switch_hot_key_pressed;
+    bool switch_hot_key_held;
 } device_t;
 /*==============================================================================*/
 
