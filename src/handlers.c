@@ -378,11 +378,15 @@ void handle_heartbeat_msg(uart_packet_t *packet, device_t *state) {
     uint16_t other_running_version = packet->data16[0];
     uint32_t other_running_checksum = packet->data32[1];
     bool other_board_connected = packet->data[3];
+
+    /* If our output is not connected and the other output is connected, switch to the other output */
     if ( (!state->tud_connected || !tud_ready()) && other_board_connected && state->board_role == state->active_output){
 	state->active_output ^= 1;
     	set_active_output(state, state->active_output);
     }
-
+    /* If both outputs not connected, turn of keyboard leds */
+    if ( (!state->tud_connected || !tud_ready()) && !other_board_connected)
+	set_keyboard_leds(0, state);
     
 
     if (state->fw.upgrade_in_progress)
